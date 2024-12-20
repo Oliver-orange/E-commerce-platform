@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Product Listings</h2>
+<div id="products">
+    {% for product in products %}
+    <div class="product" data-id="{{ product.id }}">
+        <h3>{{ product.name }}</h3>
+        <p>Price: ${{ product.price }}</p>
+        <button onclick="addToCart({{ product.id }})">Add to Cart</button>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // 添加产品到购物车的函数
+    function addToCart(productId) {
+        fetch('/add_to_cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'product_id=' + productId // 传递产品ID
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Product ${productId} has been added to your cart!`);
+                    } else {
+                        alert('You need to log in to add products to your cart.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Profile</h2>
+{% if user %}
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<!-- 在这里展示用户的个人信息 -->
+{% else %}
+<p>Please log in to see your profile.</p>
+{% endif %}
+{% endblock %}

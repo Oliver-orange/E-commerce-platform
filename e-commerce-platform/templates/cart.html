@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Cart</h2>
+<div id="cart-items">
+    {% if items %}
+    <ul>
+        {% for item in items %}
+        <li>{{ item.name }} - ${{ item.price }} x {{ item.quantity }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Total Amount: ${{ total_amount }}</h3>  <!-- 显示总金额 -->
+    {% else %}
+    <p>No products in cart.</p>
+    {% endif %}
+</div>
+<button onclick="checkout()">Proceed to Checkout</button>
+
+<script>
+    // 结账函数
+    function checkout() {
+        fetch('/checkout', {
+            method: 'POST'
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Checkout completed!');
+                        window.location.href = '/cart'; // 导航到购物车页面
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+    }
+</script>
+{% endblock %}
